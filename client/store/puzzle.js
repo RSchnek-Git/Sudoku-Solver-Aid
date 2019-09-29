@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import {gridValues} from '../solverEngine'
 /**
  * ACTION TYPES
  */
@@ -23,6 +23,7 @@ export const gotPuzzleThunk = puzzle => dispatch => {
     // const res = await axios.get('/auth/me')
     console.log('THUNK:', puzzle)
     dispatch(gotPuzzle(puzzle))
+    gridValues(puzzle)
   } catch (err) {
     console.error(err)
   }

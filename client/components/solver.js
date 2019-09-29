@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import gridMaker from '../solverEngine'
+import {gridMaker} from '../solverEngine'
 import {gotPuzzleThunk} from '../store/puzzle'
 import {connect} from 'react-redux'
 
@@ -87,12 +87,12 @@ const emptyBoard = {
   I9: ''
 }
 
-export class Solver extends Component {
-  constructor() {
-    super()
+class SolvePage extends Component {
+  constructor(props) {
+    super(props)
     this.state = emptyBoard
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleChange(evt) {
@@ -102,15 +102,14 @@ export class Solver extends Component {
     })
   }
 
-  handleSubmit() {
+  handleClick() {
     event.preventDefault()
-    this.props.gotPuzzleThunk(this.state)
-    this.setState(emptyBoard)
+    this.props.gotPuzzle(this.state)
+    // this.props.history.push('/wowfactor')
   }
 
   render() {
     const grid = gridMaker()
-    console.log(this.state)
     return (
       <div id="screen">
         <div id="game">
@@ -122,6 +121,7 @@ export class Solver extends Component {
                     {row.map(cell => {
                       return (
                         <td className="cell" key={cell}>
+                          {' '}
                           <input
                             type="text"
                             name={cell}
@@ -138,7 +138,9 @@ export class Solver extends Component {
             </tbody>
           </table>
           <div className="btn">
-            <button type="submit">Solve</button>
+            <button type="button" onClick={this.handleClick}>
+              Solve
+            </button>
           </div>
         </div>
       </div>
@@ -147,7 +149,19 @@ export class Solver extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  gotPuzzleThunk: puzzle => dispatch(gotPuzzleThunk(puzzle))
+  gotPuzzle: puzzle => {
+    dispatch(gotPuzzleThunk(puzzle))
+  }
 })
 
-export default connect(null, mapDispatchToProps)(Solver)
+const Solver = connect(null, mapDispatchToProps)(SolvePage)
+export default Solver
+// 003020600
+// 900305001
+// 001806400
+// 008102900
+// 700000008
+// 006708200
+// 002609500
+// 800203009
+// 005010300

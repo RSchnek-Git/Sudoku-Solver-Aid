@@ -110,7 +110,7 @@ export class Solver extends Component {
 
   render() {
     const grid = gridMaker()
-    console.log(grid)
+    console.log(this.state)
     return (
       <div id="screen">
         <div id="game">

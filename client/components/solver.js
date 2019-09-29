@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {gridMaker} from '../solverEngine'
 import {gotPuzzleThunk} from '../store/puzzle'
 import {connect} from 'react-redux'
 
@@ -108,8 +107,22 @@ class SolvePage extends Component {
     // this.props.history.push('/wowfactor')
   }
 
+  gridMaker = () => {
+    const rows = 'ABCDEFGHI'
+    const cols = '123456789'
+    let returnArr = []
+    for (let r = 0; r < rows.length; r++) {
+      let rowArr = []
+      for (let c = 0; c < cols.length; c++) {
+        rowArr.push(rows[r] + cols[c])
+      }
+      returnArr.push(rowArr)
+    }
+    return returnArr
+  }
+
   render() {
-    const grid = gridMaker()
+    const grid = this.gridMaker()
     return (
       <div id="screen">
         <div id="game">

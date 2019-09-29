@@ -1,28 +1,3 @@
-export const gridMaker = () => {
-  const rows = 'ABCDEFGHI'
-  const cols = '123456789'
-  let returnArr = []
-  for (let r = 0; r < rows.length; r++) {
-    let rowArr = []
-    for (let c = 0; c < cols.length; c++) {
-      rowArr.push(rows[r] + cols[c])
-    }
-    returnArr.push(rowArr)
-  }
-  return returnArr
-}
-
-function cross(N, M) {
-  //computes the cross product of elements in n and in m
-  let resArr = []
-  for (let i = 0; i < N.length; i++) {
-    for (let j = 0; j < M.length; j++) {
-      resArr.push(N[i] + M[j])
-    }
-  }
-  return resArr
-}
-
 //------------------------DEFINITIONS----------------------
 const digits = '123456789'
 const rows = 'ABCDEFGHI'
@@ -101,44 +76,66 @@ for (let cell in units) {
 }
 
 //--------------------------FUNCTIONS----------------------
-// function parseGrid(grid){
-//     //convert grid to an object {square: digits} where digits are all possible values that are able to be placed in that square, or return False if there's a contradiction detected
-//     let values = {}
-//     for(let s = 0; s < squares.length; s++){
-//         values[squares[s]] = digits;
-//     }
-//     for(let dictKeys in gridValues(grid)){
-//         if(gridValues(grid).hasOwnProperty(dictKeys)){
-//             if(digits.includes(gridValues(grid).dictKeys) && !assign(values, dictKeys, gridValues(grid).dictKeys)){
-//                 return false
-//             }
-//         }
-//     }
-//     return values
-// }
-
-export function gridValues(grid) {
-  //convert grid into a dict of {square: char} with '0' or ' ' for empty cells
-  //grid will be an object of objects
-  let chars = {}
-  for (const cell in grid) {
-    if (
-      grid.hasOwnProperty(cell) &&
-      (digits.includes(grid[cell]) || '0.'.includes(grid[cell]))
-    ) {
-      chars[cell] = grid[cell]
+function cross(N, M) {
+  //computes the cross product of elements in n and in m
+  let resArr = []
+  for (let i = 0; i < N.length; i++) {
+    for (let j = 0; j < M.length; j++) {
+      resArr.push(N[i] + M[j])
     }
   }
-  console.log('CHARS:', chars)
-  return chars
+  return resArr
 }
 
-// function assign(values, cells, possibles){
-//     const otherValues = values[cells].replace(possibles, '');
-//     for (const key in otherValues) {
-//         if (otherValues.hasOwnProperty(key)) {
-//             if every
+export const gridValues = grid => {
+  //convert grid into a dict of {square: char} with '0' or ' ' for empty cells
+  //grid will be an object of objects
+  let puzzle = {}
+  for (const cell in grid) {
+    if (grid.hasOwnProperty(cell)) {
+      if (grid[cell] === '') {
+        puzzle[cell] = '.'
+      } else {
+        puzzle[cell] = grid[cell]
+      }
+    }
+  }
+  console.log('CHARS:', puzzle)
+  return puzzle
+}
 
-//         }
-//     }
+function parseGrid(grid) {
+  //convert grid to an object {square: digits} where digits are all possible values that are able to be placed in that square, or return False if there's a contradiction detected
+  let values = {}
+  for (let s = 0; s < squares.length; s++) {
+    values[squares[s]] = digits
+  }
+  for (let dictKeys in gridValues(grid)) {
+    if (gridValues(grid).hasOwnProperty(dictKeys)) {
+      if (
+        digits.includes(gridValues(grid).dictKeys) &&
+        !assign(values, dictKeys, gridValues(grid).dictKeys)
+      ) {
+        return false
+      }
+    }
+  }
+  return values
+}
+
+function assign(values, cells, possibles) {
+  const otherValues = values[cells].replace(possibles, '')
+  for (const key in otherValues) {
+    if (otherValues.hasOwnProperty(key)) {
+      if (otherValues.every(eliminate(values, cells, otherValues[key]))) {
+        return values
+      } else {
+        return false
+      }
+    }
+  }
+}
+
+// function eliminate(values, cells, possibles){
+//     if
 // }

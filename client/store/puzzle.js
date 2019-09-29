@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import axios from 'axios'
 import {gridValues} from '../solverEngine'
 /**
  * ACTION TYPES
@@ -21,7 +21,6 @@ const gotPuzzle = puzzle => ({type: GOT_PUZZLE, puzzle})
 export const gotPuzzleThunk = puzzle => dispatch => {
   try {
     // const res = await axios.get('/auth/me')
-    console.log('THUNK:', puzzle)
     dispatch(gotPuzzle(puzzle))
     gridValues(puzzle)
   } catch (err) {

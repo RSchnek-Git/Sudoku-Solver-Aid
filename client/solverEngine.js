@@ -21,7 +21,7 @@ for (let rs = 0; rs < diagonalRows.length; rs++) {
 }
 
 //`${units} creates all of the "groups" that a given cell belongs to, including the cell
-//ie. units['H8] = H8: [
+//ie. units['H8'] = H8: [
 // [
 //     'A8', 'B8', 'C8',
 //     'D8', 'E8', 'F8',
@@ -104,7 +104,7 @@ export const gridValues = grid => {
   return puzzle
 }
 
-function parseGrid(grid) {
+export function parseGrid(grid) {
   //convert grid to an object {square: digits} where digits are all possible values that are able to be placed in that square, or return False if there's a contradiction detected
   let values = {}
   for (let s = 0; s < squares.length; s++) {
@@ -136,6 +136,36 @@ function assign(values, cells, possibles) {
   }
 }
 
-// function eliminate(values, cells, possibles){
-//     if
-// }
+function eliminate(values, cells, possibles) {
+  //s = cells, d = possibles
+  // Eliminate d from values[s]; propagate when values or places <= 2.
+  // Return values, except return False if a contradiction is detected.
+  if (!values[cells].includes(possibles)) return values //Already eliminated
+  values[cells] = values[cells].replace(possibles, '')
+  // (1) If a square "cells" is reduced to one value "possibles,"" then eliminate "possibles" from the peers.
+  if (values[cells].length === 0) return false
+  else if (values[cells].length === 1) {
+    //Contradiction: removed last value
+    let newPossibles = values[cells]
+    for (let newCells = 0; newCells < peers[cells].length; newCells++) {
+      if (!newPossibles.every(eliminate(values, newCells, newPossibles)))
+        return false
+    }
+  }
+  // //(2) If a unit u is reduced to only one place for a value d, then put it there.
+  // for (let u = 0; u < units[cells].length; u++){
+  //     for(let s = 0; s < u.length; s++){
+  //         if(values[cells].includes(possibles)){
+  //             dplaces
+  //         }
+  //     }
+  // }
+  // dplaces = [s for s in u if d in values[s]]
+  // if len(dplaces) == 0:
+  //     return false // Contradiction: no place for this value
+  // elif len(dplaces) == 1:
+  //     # d can only be in one place in unit; assign it there
+  //         if not assign(values, dplaces[0], d):
+  //             return False
+  // return values
+}

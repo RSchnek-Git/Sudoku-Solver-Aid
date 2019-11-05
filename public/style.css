@@ -20,7 +20,7 @@ form div {
   display: inline-block;
 }
 
-#game {
+.game {
   width: 600px;
   height: 600px;
   background-color: white;
